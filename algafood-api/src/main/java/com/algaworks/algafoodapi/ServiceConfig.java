@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfig {
 
-    @Bean(initMethod = "init", destroyMethod = "preDestruct")
+    @Bean
     public AtivacaoClienteService ativacaoClienteService(){
         return new AtivacaoClienteService();
     }
