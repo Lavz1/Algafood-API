@@ -8,6 +8,6 @@ public interface EstadoRepository {
 
     List<Estado> todos();
     Estado porID(Long id);
-    Estado adicionar(Estado estado);
+    Estado salvar(Estado estado);
     void remover(Long id);
 }

@@ -3,6 +3,7 @@ package com.algaworks.algafood.infraestructure.repository;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,7 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Transactional
     @Override
-    public Cidade adicionar(Cidade cidade) {
+    public Cidade salvar(Cidade cidade) {
         return entityManager.merge(cidade);
     }
 
@@ -37,6 +38,11 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     @Override
     public void remover(Long id) {
         Cidade cidade = porID(id);
+
+        if(cidade == null){
+            throw new EmptyResultDataAccessException(1);
+        }
+
         entityManager.remove(cidade);
     }
 }

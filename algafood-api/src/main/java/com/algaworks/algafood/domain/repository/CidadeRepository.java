@@ -8,6 +8,6 @@ public interface CidadeRepository {
 
     List<Cidade> todas();
     Cidade porID(Long id);
-    Cidade adicionar(Cidade cidade);
+    Cidade salvar(Cidade cidade);
     void remover(Long id);
 }
