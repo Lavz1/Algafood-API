@@ -10,11 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -27,16 +35,16 @@ public class RestauranteController {
 
     @GetMapping()
     public List<Restaurante> listar(){
-        return restauranteRepository.todos();
+        return restauranteRepository.findAll();
     }
 
 
     @GetMapping("/{restaurante_id}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long restaurante_id){
-        Restaurante restaurante= restauranteRepository.porID(restaurante_id);
+        Optional<Restaurante> restaurante= restauranteRepository.findById(restaurante_id);
 
-        if(restaurante != null){
-            return  ResponseEntity.ok(restaurante);
+        if(restaurante.isPresent()){
+            return  ResponseEntity.ok(restaurante.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -56,14 +64,14 @@ public class RestauranteController {
     public ResponseEntity<?> atualizar(@PathVariable Long restaurante_id,
                                                  @RequestBody  Restaurante restaurante){
         try {
-            Restaurante restauranteAtual = restauranteRepository.porID(restaurante_id);
+            Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restaurante_id);
 
-            if(restauranteAtual == null) return ResponseEntity.notFound().build();
+            if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
 
-            BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
-            restauranteAtual = cadastroRestaurante.salvar(restauranteAtual);
+            BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
+            Restaurante restauranteSalva = cadastroRestaurante.salvar(restauranteAtual.get());
 
-            return ResponseEntity.ok(restauranteAtual);
+            return ResponseEntity.ok(restauranteSalva);
 
         } catch (EntidadeNaoEncontradaException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -74,12 +82,12 @@ public class RestauranteController {
     @PatchMapping("/{restaurante_id}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restaurante_id, @RequestBody Map<String, Object> campos){
 
-        Restaurante restauranteAtual = restauranteRepository.porID(restaurante_id);
-        if(restauranteAtual == null) return ResponseEntity.notFound().build();
+        Optional<Restaurante> restauranteAtual = restauranteRepository.findById(restaurante_id);
+        if(restauranteAtual.isEmpty()) return ResponseEntity.notFound().build();
 
-        merge(campos, restauranteAtual);
+        merge(campos, restauranteAtual.get());
 
-        return atualizar(restaurante_id, restauranteAtual);
+        return atualizar(restaurante_id, restauranteAtual.get());
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino){
@@ -97,6 +105,20 @@ public class RestauranteController {
             ReflectionUtils.setField(field, restauranteDestino, novoValor);
         });
     }
+
+//    @DeleteMapping("/{restaurante_id")
+//    public ResponseEntity<?> remover(@PathVariable Long restaurante_id){
+//        try {
+//            cadastroCidade.remover(cidade_id);
+//            return ResponseEntity.noContent().build();
+//
+//        } catch (EntidadeNaoEncontradaException e){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+//
+//        } catch (EntidadeEmUsoException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+//        }
+//    }
 }
 
 

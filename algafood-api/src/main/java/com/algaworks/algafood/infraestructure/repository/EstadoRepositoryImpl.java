@@ -1,41 +1,42 @@
 package com.algaworks.algafood.infraestructure.repository;
 
 import com.algaworks.algafood.domain.model.Estado;
-import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-@Repository
-public class EstadoRepositoryImpl implements EstadoRepository {
+/***
+ * JUST HERE AS AN EXAMPLE OF USING ENTITYMANAGER
+ */
+//@Repository
+public class EstadoRepositoryImpl{ //implements EstadoRepository {
 
     @Autowired
     private EntityManager entityManager;
 
-    @Override
+//    @Override
     public List<Estado> todos() {
         TypedQuery<Estado> query = entityManager.createQuery("from Estado", Estado.class);
         return query.getResultList();
     }
 
-    @Override
+//    @Override
     public Estado porID(Long id) {
         return entityManager.find(Estado.class, id);
     }
 
     @Transactional
-    @Override
+//    @Override
     public Estado salvar(Estado estado) {
         return entityManager.merge(estado);
     }
 
     @Transactional
-    @Override
+//    @Override
     public void remover(Long id) {
         Estado estado = porID(id);
 
