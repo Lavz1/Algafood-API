@@ -40,6 +40,11 @@ public class TesteController {
         return restauranteRepository.findByNomeContaining(nome);
     }
 
+    @GetMapping("/restaurantes/find-impl")
+    public List<Restaurante> find(@RequestParam String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+    }
+
    /* @GetMapping("/restaurantes/por-nome-cozinhaId")
     public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
         return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
