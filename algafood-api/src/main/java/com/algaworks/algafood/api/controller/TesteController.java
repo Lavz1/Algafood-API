@@ -40,16 +40,22 @@ public class TesteController {
         return restauranteRepository.findByNomeContaining(nome);
     }
 
+//    @GetMapping("/restaurantes/find-impl")
+//    public List<Restaurante> find(@RequestParam String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
+//        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+//    }
+
     @GetMapping("/restaurantes/find-impl")
-    public List<Restaurante> find(@RequestParam String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
-        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
+    public List<Restaurante> restaurantesPorNomeFrete(@RequestParam String nome,
+                                                      BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+        return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
     }
 
-   /* @GetMapping("/restaurantes/por-nome-cozinhaId")
-    public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
-        return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
-    }*/
-   @GetMapping("/restaurantes/por-nome-cozinhaId")
+    /* @GetMapping("/restaurantes/por-nome-cozinhaId")
+     public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
+         return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+     }*/
+    @GetMapping("/restaurantes/por-nome-cozinhaId")
     public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
         return restauranteRepository.procurarPorNome(nome, cozinhaId);
     }
