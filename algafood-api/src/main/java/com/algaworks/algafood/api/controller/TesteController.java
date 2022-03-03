@@ -30,26 +30,27 @@ public class TesteController {
         return cozinhaRepository.findByNomeContaining(nome);
     }
 
+    @GetMapping("/cozinhas/primeira")
+    public Optional<Cozinha> cozinhaPrimeira() {
+        return cozinhaRepository.buscarPrimeiro();
+    }
+
+    @GetMapping("/restaurantes/primeiro")
+    public Optional<Restaurante> restaurantePrimeiro() {
+        return restauranteRepository.buscarPrimeiro();
+    }
+
     @GetMapping("/restaurantes/por-taxa-frete")
     public List<Restaurante> taxaFreteEntreValores(@RequestParam BigDecimal taxaInicial, BigDecimal taxaFinal) {
         return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
     }
 
-    @GetMapping("/restaurantes/por-nome")
-    public List<Restaurante> findByNomeContaining(@RequestParam String nome) {
-        return restauranteRepository.findByNomeContaining(nome);
-    }
 
 //    @GetMapping("/restaurantes/find-impl")
 //    public List<Restaurante> find(@RequestParam String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
 //        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
 //    }
 
-    @GetMapping("/restaurantes/find-impl")
-    public List<Restaurante> restaurantesPorNomeFrete(@RequestParam String nome,
-                                                      BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
-        return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
-    }
 
     /* @GetMapping("/restaurantes/por-nome-cozinhaId")
      public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
@@ -73,4 +74,27 @@ public class TesteController {
     public int countRestaurantsByCozinhaId(@RequestParam Long cozinhaId) {
         return restauranteRepository.countByCozinhaId(cozinhaId);
     }
+
+    @GetMapping("/restaurantes/find-impl")
+    public List<Restaurante> restaurantesPorNomeFrete(@RequestParam String nome,
+                                                      BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+        return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
+    }
+
+
+    /*@GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+        return restauranteRepository.findAll(comFreteGratis().
+                and(comNomeSemelhante(nome)));
+    }*/
+
+    @GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+        return restauranteRepository.findComFreteGratis(nome);
+    }
+
+//    @GetMapping("/restaurantes/com-frete-gratis")
+//    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+//        return restauranteRepository.findComFreteGratis(nome);
+//    }
 }
