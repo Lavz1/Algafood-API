@@ -1,10 +1,26 @@
 package com.algaworks.algafood.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -25,4 +41,45 @@ public class Restaurante {
     @ManyToOne //Muitos restaurantes possui uma cozinha.
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
+
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime(0)")
+    private LocalDateTime dataCadastro;
+
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime(0)")
+    private LocalDateTime dataAtualizacao;
+
+    @JsonIgnore
+    @Embedded
+    private Endereco endereco;
+
+    @JsonIgnore
+    @ManyToMany()
+    @JoinTable(name = "restaurante_forma_pagamento",
+            joinColumns= @JoinColumn(name="restaurante_id", referencedColumnName="ID"),
+            inverseJoinColumns= @JoinColumn(name="forma_pagamento_id", referencedColumnName="ID"))
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurante")
+    private List<Produto> produtos = new ArrayList<>();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

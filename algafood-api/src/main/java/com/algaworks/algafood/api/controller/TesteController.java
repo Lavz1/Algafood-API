@@ -45,17 +45,6 @@ public class TesteController {
         return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
     }
 
-
-//    @GetMapping("/restaurantes/find-impl")
-//    public List<Restaurante> find(@RequestParam String nome, BigDecimal taxaInicial, BigDecimal taxaFinal) {
-//        return restauranteRepository.find(nome, taxaInicial, taxaFinal);
-//    }
-
-
-    /* @GetMapping("/restaurantes/por-nome-cozinhaId")
-     public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
-         return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
-     }*/
     @GetMapping("/restaurantes/por-nome-cozinhaId")
     public List<Restaurante> findByNomeContaining(@RequestParam String nome, Long cozinhaId) {
         return restauranteRepository.procurarPorNome(nome, cozinhaId);
@@ -81,20 +70,9 @@ public class TesteController {
         return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
     }
 
-
-    /*@GetMapping("/restaurantes/com-frete-gratis")
-    public List<Restaurante> restaurantesComFreteGratis(String nome) {
-        return restauranteRepository.findAll(comFreteGratis().
-                and(comNomeSemelhante(nome)));
-    }*/
-
     @GetMapping("/restaurantes/com-frete-gratis")
     public List<Restaurante> restaurantesComFreteGratis(String nome) {
         return restauranteRepository.findComFreteGratis(nome);
     }
 
-//    @GetMapping("/restaurantes/com-frete-gratis")
-//    public List<Restaurante> restaurantesComFreteGratis(String nome) {
-//        return restauranteRepository.findComFreteGratis(nome);
-//    }
 }
