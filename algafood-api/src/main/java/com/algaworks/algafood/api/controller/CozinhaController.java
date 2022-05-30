@@ -28,6 +28,7 @@ public class CozinhaController {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 

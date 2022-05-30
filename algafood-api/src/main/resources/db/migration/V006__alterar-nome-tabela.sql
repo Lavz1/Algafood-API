@@ -1,0 +1,1 @@
+alter table pedido change status status_pedido varchar(10) not null;
