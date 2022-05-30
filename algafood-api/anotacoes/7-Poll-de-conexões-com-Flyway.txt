@@ -1,0 +1,20 @@
+7. Poll de conexões com Flyway
+
+* arquivo afterMigrate.sql -> arquivo de callback, depois do flyway rodar todas as migraçõoes o Flyway chamará o afterMigrate!
+spring.flyway.locations=classpath:db/migration,classpath:db/datatest
+
+* Todos DB relacionais possuem alguma PROCEDURE para dar rollback em todas as alteções caso uma delas falhe.
+
+* Existe uma forma de resolver os erros de migração por linha de comando ussando o flyway.properties adicionando as inforções de conexao com banco e executando no terminal './mvnw flyway:repair -Dflaway.configFiles=<path>'
+
+* 	OneToMany -> Um <pedido> pode conter muitos <itens>
+	ManyToOne -> Vários <itens> podem pertencer a um <pedido>
+
+	No formato relacional, utilizamos os seguintes tipos de relacionamentos:
+
+	- Um para Um (1:1) (@OneToOne)
+	- Um para Muitos (1:N) (@OneToMany)
+	- Muitos para Um (N:1) (@ManyToOne)
+	- Muitos para muitos (N:N) (@ManyToMany)	
+
+	+
